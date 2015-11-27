@@ -1,3 +1,7 @@
+FORK NOTE
+==================
+This is a fork of [Angular-image-zoom](https://github.com/owlsomely/angular-image-zoom). Only difference is support for touch devices.
+
 Angular Image Zoom
 ==================
 A native angular.js diretive that provide basic image-hover-zoom feature like jQuery's [CloudZoom](https://github.com/smurfy/cloud-zoom)
@@ -48,13 +52,13 @@ Usage
   <div image-src="./Pevensey_castle-09.jpg" image-zoom background-color="'#FFFFFF'">
   ```
 
-  * `max-width` and `max-height`: If at least one of the two values is set, image size will be calculated to fit maintaining its aspect ratio. If only one of the two is set, the other will be set with image’s natural width/height. 
+  * `max-width` and `max-height`: If at least one of the two values is set, image size will be calculated to fit maintaining its aspect ratio. If only one of the two is set, the other will be set with image’s natural width/height.
     Example:
     ```html
     <div image-src="./Pevensey_castle-09.jpg" image-zoom max-width="300" max-height="250">
     ```
 
-  * `position-absolute`: If attribute is set to true, magnifying glass position will take page scrolling in account. This feature is intended for using the plugin within an absolute positioned element. 
+  * `position-absolute`: If attribute is set to true, magnifying glass position will take page scrolling in account. This feature is intended for using the plugin within an absolute positioned element.
     Example:
     ```html
     <div image-src="./Pevensey_castle-09.jpg" image-zoom position-absolute="true">
