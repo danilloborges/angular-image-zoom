@@ -39,7 +39,7 @@ var ImageZoom = angular.module('ImageZoom', [])
           templateUrl: '=?templateUrl'
         },
         link: function ($scope, element) {
-
+          var dragging = false
           var lens = element.find('div');
           var image = element.find('img');
           var el;
@@ -49,13 +49,13 @@ var ImageZoom = angular.module('ImageZoom', [])
           var isLensHidden = false;
           var isImageLoading = false;
 
-          // Check if zoomFactor was set 
+          // Check if zoomFactor was set
           // otherwise set it to ImageZoomDefaultConfig.zoomFactor
           if(!$scope.zoomFactor){
             $scope.zoomFactor = ImageZoomDefaultConfig.zoomFactor;
           }
 
-          // Check if backgroundColor was set 
+          // Check if backgroundColor was set
           // otherwise set it to ImageZoomDefaultConfig.backgroundColor
           if(!$scope.backgroundColor){
             $scope.backgroundColor = ImageZoomDefaultConfig.backgroundColor;
@@ -68,11 +68,6 @@ var ImageZoom = angular.module('ImageZoom', [])
               $scope.imageSrc = newVale;
             }
           });
-
-          // if touch devices, do nothing
-          if (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
-            return;
-          }
 
           var hideLens = function () {
             lens.css({
@@ -100,6 +95,12 @@ var ImageZoom = angular.module('ImageZoom', [])
           };
 
           var mousemove = function (evt) {
+            if(evt.touches && evt.touches.length) {
+              if(dragging)
+                evt.preventDefault()
+              evt = evt.touches[0]
+            }
+
             lensCSS = $scope.magnify(evt);
             if (lensCSS) {
               lens.css(lensCSS);
@@ -107,13 +108,15 @@ var ImageZoom = angular.module('ImageZoom', [])
           };
 
           var mouseleave = function (evt) {
+            dragging = false
             console.log('[mouseleave]');
             hideLens();
             $document.off('mousemove', mousemove);
             $document.off('mouseleave', mouseleave);
           };
 
-          element.on('mouseenter', function () {
+          element.on('mouseenter touchstart', function () {
+            dragging = true
             if (isLensHidden) {
               showGlass();
             }
@@ -126,8 +129,8 @@ var ImageZoom = angular.module('ImageZoom', [])
               lensHeight: lens[0].offsetHeight
             };
             el = angular.extend($scope.getOffset(element[0]), extInfo);
-            $document.on('mousemove', mousemove);
-            $document.on('mouseleave', mouseleave);
+            $document.on('mousemove touchmove', mousemove);
+            $document.on('mouseleave touchend touchcancel', mouseleave);
           });
 
           // clean up
@@ -238,11 +241,7 @@ var ImageZoom = angular.module('ImageZoom', [])
                 offsetLeft += el.offsetLeft;
                 offsetTop += el.offsetTop;
               }
-              while (el.offsetParent) {
-                el = el.offsetParent;
-                offsetTop += el.offsetTop;
-                offsetLeft += el.offsetLeft;
-              }
+              el = el.offsetParent;
             }
             return {
               left: offsetLeft,
