@@ -31,6 +31,7 @@ var ImageZoom = angular.module('ImageZoom', [])
         },
         scope: {
           imageSrc: '@',
+          placeholderSrc: '@',
           zoomFactor: '=?',
           maxHeight: '=?',
           maxWidth: '=?',
@@ -48,6 +49,13 @@ var ImageZoom = angular.module('ImageZoom', [])
           var lensCSS;
           var isLensHidden = false;
           var isImageLoading = false;
+
+          // Check if placeholder image is set
+          // otherwise set it same as zoom image
+          if(!$scope.placeholderSrc) {
+            $scope.placeholderSrc = $scope.imageSrc;
+          }
+
 
           // Check if zoomFactor was set
           // otherwise set it to ImageZoomDefaultConfig.zoomFactor
