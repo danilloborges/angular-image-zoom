@@ -56,7 +56,6 @@ var ImageZoom = angular.module('ImageZoom', [])
             $scope.placeholderSrc = $scope.imageSrc;
           }
 
-
           // Check if zoomFactor was set
           // otherwise set it to ImageZoomDefaultConfig.zoomFactor
           if(!$scope.zoomFactor){
