@@ -145,10 +145,15 @@ var ImageZoom = angular.module('ImageZoom', [])
 
           // When image loaded, get image natural width and height
           image.bind('load', function (evt) {
-            console.log('imaged loaded');
             nWidth = this.naturalWidth;
             nHeight = this.naturalHeight;
-            changeLensBgImg($scope.imageSrc);
+
+            img = new Image();
+            img.onload = function() {
+              changeLensBgImg($scope.imageSrc);  
+            }
+            img.src = $scope.imageSrc;
+            
             if($scope.maxHeight || $scope.maxWidth){
               ensureAspectRatio(nWidth, nHeight);
             }
@@ -258,7 +263,7 @@ var ImageZoom = angular.module('ImageZoom', [])
 
           $scope.getLensStyle = function () {
             return {
-              background: 'url(' + $scope.imageSrc + ') no-repeat',
+              background: 'url(' + $scope.placeholderSrc + ') no-repeat',
               width: ($scope.lensWidth) ? $scope.lensWidth + 'px' : '',
               height: ($scope.lensHeight) ? $scope.lensHeight + 'px' : ''
             };
