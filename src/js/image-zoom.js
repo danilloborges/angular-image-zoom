@@ -13,6 +13,8 @@ var ImageZoom = angular.module('ImageZoom', [])
     templateUrl: 'image-zoom.html',
     zoomFactor: 1.5,
     backgroundColor: 'transparent'
+  }).run(function($templateCache) {
+        $templateCache.put('image-zoom.html', '<div class="image-zoom"><div class="image-zoom-lens" data-ng-style="getLensStyle()"></div><img class="image" ng-src="{{ imageSrc }}"/></div>');
   })
   .controller('ImageZoomController', ['$scope',
     function ($scope) {
@@ -40,7 +42,7 @@ var ImageZoom = angular.module('ImageZoom', [])
           templateUrl: '=?templateUrl'
         },
         link: function ($scope, element) {
-          var dragging = false
+          var dragging = false;
           var lens = element.find('div');
           var image = element.find('img');
           var el;
@@ -80,7 +82,7 @@ var ImageZoom = angular.module('ImageZoom', [])
             lens.css({
               opacity: 0,
               filter: 'alpha(opacity=0)',
-              display: 'none', // won't interfer other components
+              display: 'none' // won't interfer other components
             });
             isLensHidden = true;
           };
@@ -116,7 +118,7 @@ var ImageZoom = angular.module('ImageZoom', [])
 
           var mouseleave = function (evt) {
             dragging = false
-            console.log('[mouseleave]');
+            //console.log('[mouseleave]');
             hideLens();
             $document.off('mousemove', mousemove);
             $document.off('mouseleave', mouseleave);
@@ -144,14 +146,14 @@ var ImageZoom = angular.module('ImageZoom', [])
           element.on('destroy', watchImageSrc);
 
           // When image loaded, get image natural width and height
-          image.bind('load', function (evt) {
+          image.bind('load', function (/*evt*/) {
             nWidth = this.naturalWidth;
             nHeight = this.naturalHeight;
 
             var img = new Image();
             img.onload = function() {
               changeLensBgImg($scope.imageSrc);  
-            }
+            };
             img.src = $scope.imageSrc;
             
             if($scope.maxHeight || $scope.maxWidth){
@@ -181,7 +183,7 @@ var ImageZoom = angular.module('ImageZoom', [])
             * @return {Object} { width, heigth }
             */
           var calculateAspectRatioFit = function (srcWidth, srcHeight, maxWidth, maxHeight) {
-              console.log({srcW: srcWidth, srcH:srcHeight});
+              //console.log({srcW: srcWidth, srcH:srcHeight});
               var ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
 
               return { width: srcWidth*ratio, height: srcHeight*ratio };
@@ -213,7 +215,7 @@ var ImageZoom = angular.module('ImageZoom', [])
             px = mx - el.lensWidth / 2;
             py = my - el.lensHeight / 2;
 
-            var bgSize = (el.width * $scope.zoomFactor) + 'px ' + (el.height * $scope.zoomFactor)  + 'px'
+            var bgSize = (el.width * $scope.zoomFactor) + 'px ' + (el.height * $scope.zoomFactor)  + 'px';
 
             return {
               left: px + 'px',
