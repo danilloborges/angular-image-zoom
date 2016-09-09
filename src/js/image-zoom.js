@@ -148,7 +148,7 @@ var ImageZoom = angular.module('ImageZoom', [])
             nWidth = this.naturalWidth;
             nHeight = this.naturalHeight;
 
-            img = new Image();
+            var img = new Image();
             img.onload = function() {
               changeLensBgImg($scope.imageSrc);  
             }
